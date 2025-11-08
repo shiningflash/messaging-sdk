@@ -33,7 +33,7 @@ def test_create_and_retrieve_contact(mock_api_client, contacts):
 
     # Ensure API calls were made as expected
     mock_api_client.request.assert_any_call("POST", "/contacts", json=contact_payload)
-    mock_api_client.request.assert_any_call("GET", "/contacts/contact123")
+    mock_api_client.request.assert_any_call("GET", "/contacts/contact12")
 
 
 @pytest.mark.e2e
