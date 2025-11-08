@@ -1,0 +1,4 @@
+ERROR    logger.sdk:api.py:18 [API Error] 404: Contact not found.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:contacts.py:73 Fetching contact with ID: non-existent
+ERROR    logger.sdk:decorators.py:26 [ApiError]: Contact not found. (HTTP 404)

@@ -1,0 +1,3 @@
+2025-11-08 21:37:13,946 - WARNING - logger.sdk - No payload provided for validation.
+2025-11-08 21:37:13,946 - INFO - logger.sdk - Creating contact with payload: {'name': 'John Doe', 'phone': '+123456789'}
+2025-11-08 21:37:13,946 - ERROR - logger.sdk - [Unhandled Exception]: Contact already exists

@@ -1,0 +1,5 @@
+ERROR    logger.sdk:api.py:18 [API Error] 401: Unauthorized access.
+WARNING  logger.sdk:api.py:31 [UnauthorizedError] Ensure your API key is valid.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:messages.py:80 Fetching message details for ID: msg123
+ERROR    logger.sdk:decorators.py:26 [ApiError]: Unauthorized access. (HTTP 401)

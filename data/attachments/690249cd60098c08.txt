@@ -1,0 +1,2 @@
+INFO     logger.sdk:security.py:42 Validating HMAC signature.
+INFO     logger.sdk:security.py:55 HMAC signature validated successfully.

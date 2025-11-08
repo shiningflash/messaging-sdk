@@ -1,0 +1,3 @@
+ERROR    logger.sdk:api.py:18 [API Error] 404: Contact not found.
+INFO     logger.sdk:contacts.py:110 Deleting contact with ID: non-existent
+ERROR    logger.sdk:decorators.py:26 [ApiError]: Contact not found. (HTTP 404)
