@@ -56,10 +56,11 @@ jobs:
           pytest-coverage-path: ./coverage.txt
           junitxml-path: ./pytest.xml
       - name: Publish Allure Report
-        uses: simple-works/allure-report-action@v1
-        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+        uses: afiore/action-allure-report-publish@v0.5.0
+        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
         with:
           allure_results: allure-results
           allure_report: allure-report
           allure_history: allure-history
           gh_pages: true
+          gh_pages_branch: gh-pages
