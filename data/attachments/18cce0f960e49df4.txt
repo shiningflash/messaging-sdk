@@ -1,0 +1,2 @@
+2025-11-08 21:03:22,517 - INFO - logger.sdk - Deleting contact with ID: contact123
+2025-11-08 21:03:22,518 - INFO - logger.sdk - Successfully deleted contact with ID: contact123

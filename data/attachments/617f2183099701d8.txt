@@ -1,0 +1,2 @@
+2025-11-08 21:03:22,642 - INFO - logger.sdk - Sending GET request to http://localhost:3000/contacts with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+2025-11-08 21:03:22,642 - INFO - logger.sdk - Received response with status 200

@@ -1,0 +1,5 @@
+INFO     logger.sdk:client.py:77 Sending GET request to http://localhost:3000/contacts/non-existent with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+INFO     logger.sdk:client.py:79 Received response with status 404
+ERROR    logger.sdk:client.py:42 Resource Not Found: Not Found
+ERROR    logger.sdk:api.py:18 [API Error] 404: Resource not found.
+WARNING  logger.sdk:api.py:39 [NotFoundError] Resource does not exist.

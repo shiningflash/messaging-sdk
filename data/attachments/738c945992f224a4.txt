@@ -1,0 +1,6 @@
+2025-11-08 21:03:22,466 - WARNING - logger.sdk - No payload provided for validation.
+2025-11-08 21:03:22,466 - INFO - logger.sdk - Creating contact with payload: {'name': 'John Doe', 'phone': '+123456789'}
+2025-11-08 21:03:22,466 - ERROR - logger.sdk - Response Validation Error: [{"type":"missing","loc":["id"],"msg":"Field required","input":{},"url":"https://errors.pydantic.dev/2.10/v/missing"},{"type":"missing","loc":["name"],"msg":"Field required","input":{},"url":"https://errors.pydantic.dev/2.10/v/missing"},{"type":"missing","loc":["phone"],"msg":"Field required","input":{},"url":"https://errors.pydantic.dev/2.10/v/missing"}]
+2025-11-08 21:03:22,466 - ERROR - logger.sdk - Field: ('id',), Error: Field required
+2025-11-08 21:03:22,466 - ERROR - logger.sdk - Field: ('name',), Error: Field required
+2025-11-08 21:03:22,466 - ERROR - logger.sdk - Field: ('phone',), Error: Field required

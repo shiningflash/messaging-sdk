@@ -1,0 +1,7 @@
+ERROR    logger.sdk:api.py:20 [API Error]: Unhandled API Error
+DEBUG    logger.sdk:validators.py:17 Entering validate_request decorator.
+INFO     logger.sdk:validators.py:18 Validating request payload: {'name': 'John Doe', 'phone': '+123456789'}
+DEBUG    logger.sdk:validators.py:20 Exiting validate_request decorator.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:contacts.py:40 Creating contact with payload: {'name': 'John Doe', 'phone': '+123456789'}
+ERROR    logger.sdk:decorators.py:26 [ApiError]: Unhandled API Error

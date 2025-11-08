@@ -1,0 +1,4 @@
+2025-11-08 21:03:22,432 - INFO - logger.sdk - Deleting contact with ID: contact123
+2025-11-08 21:03:22,433 - INFO - logger.sdk - Successfully deleted contact with ID: contact123
+2025-11-08 21:03:22,433 - INFO - logger.sdk - Fetching contact with ID: contact123
+2025-11-08 21:03:22,433 - ERROR - logger.sdk - [Unhandled Exception]: Contact not found
