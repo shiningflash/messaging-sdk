@@ -2,6 +2,7 @@ name: CI - Code Testing Workflow
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - develop
       - main
@@ -23,6 +24,9 @@ on:
 jobs:
   test:
     name: Run Tests and Post Coverage
+    concurrency:
+      group: allure-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -62,6 +66,7 @@ jobs:
           pytest --junitxml=pytest.xml
 
       - name: Pull previous Allure history (if exists)
+        if: always()
         run: |
           git fetch origin allure-report || true
           if git ls-remote --exit-code origin allure-report; then
@@ -71,22 +76,16 @@ jobs:
               cp -r history/* allure-results/history/ || true
             fi
           fi
-        continue-on-error: true
 
       - name: Generate Allure Report
+        if: always()
         run: |
-          allure generate allure-results -o allure-report --clean
-          if [ -d allure-report/history ]; then ls -R allure-report/history | head -n 20; fi
-
-      - name: Pytest coverage comment (PR only)
-        if: github.event_name == 'pull_request'
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-coverage-path: ./coverage.txt
-          junitxml-path: ./pytest.xml
+          allure generate allure-results -o allure-report --clean || echo "No allure-results to generate"
+          # Ensure GitHub Pages doesn’t run Jekyll (can hide assets)
+          touch allure-report/.nojekyll
 
       - name: Deploy Allure Report to GitHub Pages branch
-        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -94,6 +93,7 @@ jobs:
           publish_dir: ./allure-report
           keep_files: true
           force_orphan: false
+          commit_message: "docs(allure): update report for ${{ github.sha }} (run ${{ github.run_number }})"
 
       - name: Comment PR with Allure Report URL
         if: github.event_name == 'pull_request'
@@ -102,12 +102,20 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const reportUrl = `https://${owner}.github.io/${repo}/`;
-            const body = `## 📊 Test Report Generated\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline`;
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: body
+            const bust = `${context.runNumber}`;
+            const reportUrl = `https://${owner}.github.io/${repo}/?run=${bust}`;
+            const body = `## 📊 Test Report Updated
+
+**[Open Allure Dashboard →](${reportUrl})**
+
+Coverage • Modules • Failures • Timeline`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner, repo, issue_number: context.issue.number
             });
+            const marker = '📊 Test Report';
+            const existing = comments.find(c => c.user.type === 'Bot' && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
+            }
