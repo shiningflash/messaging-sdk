@@ -1,0 +1,4 @@
+2025-11-08 21:27:49,125 - ERROR - logger.sdk - [API Error]: Unhandled API Error
+2025-11-08 21:27:49,125 - INFO - logger.sdk - Validating request payload: {'name': 'John Doe', 'phone': '+123456789'}
+2025-11-08 21:27:49,125 - INFO - logger.sdk - Creating contact with payload: {'name': 'John Doe', 'phone': '+123456789'}
+2025-11-08 21:27:49,126 - ERROR - logger.sdk - [ApiError]: Unhandled API Error

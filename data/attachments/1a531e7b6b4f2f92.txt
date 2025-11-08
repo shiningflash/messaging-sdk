@@ -1,0 +1,3 @@
+2025-11-08 21:27:42,979 - ERROR - logger.sdk - [API Error]: An error occurred.
+2025-11-08 21:27:42,979 - INFO - logger.sdk - Requesting a list of messages with params: {'page': 1, 'limit': 10}
+2025-11-08 21:27:42,979 - ERROR - logger.sdk - [ApiError]: An error occurred.

@@ -1,0 +1,1 @@
+2025-11-08 21:27:42,881 - INFO - logger.sdk - Listing contacts with params: {'pageIndex': 1, 'max': 2}

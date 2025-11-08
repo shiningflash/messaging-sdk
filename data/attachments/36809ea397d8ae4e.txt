@@ -1,0 +1,2 @@
+2025-11-08 21:27:49,116 - INFO - logger.sdk - Validating request payload: {'name': 'John Doe', 'phone': '+123456789'}
+2025-11-08 21:27:49,116 - INFO - logger.sdk - Creating contact with payload: {'name': 'John Doe', 'phone': '+123456789'}

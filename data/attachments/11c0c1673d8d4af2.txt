@@ -1,0 +1,2 @@
+2025-11-08 21:27:42,956 - INFO - logger.sdk - Listing contacts with params: {'pageIndex': 1, 'max': 10}
+2025-11-08 21:27:42,956 - INFO - logger.sdk - Requesting a list of messages with params: {'page': 1, 'limit': 10}
