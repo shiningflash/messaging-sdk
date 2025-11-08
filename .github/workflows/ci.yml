@@ -86,13 +86,13 @@ jobs:
           junitxml-path: ./pytest.xml
 
       - name: Deploy Allure Report to GitHub Pages branch
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: allure-report
           publish_dir: ./allure-report
-          keep_files: false
+          keep_files: true
           force_orphan: false
 
       - name: Comment PR with Allure Report URL
