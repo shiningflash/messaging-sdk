@@ -1,0 +1,4 @@
+2025-11-08 21:06:31,415 - INFO - logger.sdk - Sending GET request to http://localhost:3000/contacts with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+2025-11-08 21:06:31,415 - INFO - logger.sdk - Received response with status 418
+2025-11-08 21:06:31,415 - ERROR - logger.sdk - Unhandled API Error: 418 - I'm a teapot
+2025-11-08 21:06:31,415 - ERROR - logger.sdk - [API Error]: Unhandled API Error: 418: I'm a teapot

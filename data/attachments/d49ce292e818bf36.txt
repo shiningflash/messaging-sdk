@@ -1,0 +1,2 @@
+2025-11-08 21:06:37,512 - INFO - logger.sdk - Validating HMAC signature.
+2025-11-08 21:06:37,512 - INFO - logger.sdk - HMAC signature validated successfully.

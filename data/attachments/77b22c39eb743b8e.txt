@@ -1,0 +1,6 @@
+DEBUG    logger.sdk:validators.py:17 Entering validate_request decorator.
+INFO     logger.sdk:validators.py:18 Validating request payload: {'to': '+987654321'}
+ERROR    logger.sdk:validators.py:22 Request Validation Error: [{"type":"model_type","loc":["to"],"msg":"Input should be a valid dictionary or instance of MessageContact","input":"+987654321","ctx":{"class_name":"MessageContact"},"url":"https://errors.pydantic.dev/2.10/v/model_type"},{"type":"missing","loc":["content"],"msg":"Field required","input":{"to":"+987654321"},"url":"https://errors.pydantic.dev/2.10/v/missing"},{"type":"missing","loc":["from"],"msg":"Field required","input":{"to":"+987654321"},"url":"https://errors.pydantic.dev/2.10/v/missing"}]
+ERROR    logger.sdk:validators.py:24 Field: ('to',), Error: Input should be a valid dictionary or instance of MessageContact
+ERROR    logger.sdk:validators.py:24 Field: ('content',), Error: Field required
+ERROR    logger.sdk:validators.py:24 Field: ('from',), Error: Field required
