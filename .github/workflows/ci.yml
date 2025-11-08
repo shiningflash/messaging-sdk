@@ -11,51 +11,54 @@ on:
       - "src/**"
       - "tests/**"
 
-permissions:
-  contents: write
-  pull-requests: write
-  checks: write
-
 jobs:
   test:
     name: Run Tests and Post Coverage
     runs-on: ubuntu-latest
-
-    env:  # Load environment variables from repository secrets
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: write
+      pages: write          # added for publishing
+      id-token: write       # needed by some actions
+    env:
       BASE_URL: ${{ secrets.BASE_URL }}
       API_KEY: ${{ secrets.API_KEY }}
       WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
-
     steps:
-      # Step 1: Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
-          python -m venv venv                     # Create a virtual environment
-          source venv/bin/activate                # Activate the virtual environment
-          pip install --upgrade pip               # Upgrade pip
-          pip install pytest pytest-cov           # Install coverage tools
-          pip install -r requirements.txt         # Install project dependencies
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install pytest pytest-cov allure-pytest
+          pip install -r requirements.txt
 
-      # Step 4: Run tests with coverage
-      - name: Run tests with coverage
+      - name: Run tests with coverage + allure results
         run: |
           source venv/bin/activate
-          pytest --cov=src --cov-report=xml --cov-report=term > coverage.txt
+          pytest --cov=src --cov-report=xml --cov-report=term \
+                 --alluredir=allure-results > coverage.txt
           pytest --junitxml=pytest.xml
 
-      # Step 5: Post coverage summary to the pull request
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: ./coverage.txt
           junitxml-path: ./pytest.xml
+      - name: Publish Allure Report
+        uses: simple-works/allure-report-action@v1
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+          allure_history: allure-history
+          gh_pages: true
