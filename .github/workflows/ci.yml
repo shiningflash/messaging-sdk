@@ -11,6 +11,15 @@ on:
       - "src/**"
       - "tests/**"
       - ".github/workflows/**"
+  push:
+    branches:
+      - develop
+      - main
+      - workflows-improvement
+    paths:
+      - "src/**"
+      - "tests/**"
+      - ".github/workflows/**"
 
 jobs:
   test:
@@ -19,9 +28,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      checks: write
-      pages: write          # added for publishing
-      id-token: write       # needed by some actions
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
       API_KEY: ${{ secrets.API_KEY }}
@@ -35,6 +41,11 @@ jobs:
         with:
           python-version: "3.9"
 
+      - name: Set up Node (for Allure CLI)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
       - name: Install dependencies
         run: |
           python -m venv venv
@@ -42,32 +53,45 @@ jobs:
           pip install --upgrade pip
           pip install pytest pytest-cov allure-pytest
           pip install -r requirements.txt
+          npm install -g allure-commandline
 
-      - name: Run tests with coverage + allure results
+      - name: Run tests (coverage + allure results)
         run: |
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
                  --alluredir=allure-results > coverage.txt
           pytest --junitxml=pytest.xml
 
-      - name: Generate Allure Report
-        if: always()
+      - name: Pull previous Allure history (if exists)
         run: |
-          source venv/bin/activate
-          pip install allure-behave
-          allure generate allure-results -o allure-report --clean
+          git fetch origin allure-report || true
+          if git ls-remote --exit-code origin allure-report; then
+            git checkout origin/allure-report -- history || true
+            if [ -d history ]; then
+              mkdir -p allure-results/history
+              cp -r history/* allure-results/history/ || true
+            fi
+          fi
+        continue-on-error: true
 
-      - name: Pytest coverage comment
+      - name: Generate Allure Report
+        run: |
+          allure generate allure-results -o allure-report --clean
+          if [ -d allure-report/history ]; then ls -R allure-report/history | head -n 20; fi
+
+      - name: Pytest coverage comment (PR only)
+        if: github.event_name == 'pull_request'
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: ./coverage.txt
           junitxml-path: ./pytest.xml
-      - name: Publish Allure Report
-        uses: afiore/action-allure-report-publish@v0.5.0
-        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+
+      - name: Deploy Allure Report to GitHub Pages branch
+        if: github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          allure_results: allure-results
-          allure_report: allure-report
-          allure_history: allure-history
-          gh_pages: true
-          gh_pages_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: allure-report
+          publish_dir: ./allure-report
+          keep_files: false
+          force_orphan: false
