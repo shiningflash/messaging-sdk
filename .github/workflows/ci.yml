@@ -104,11 +104,7 @@ jobs:
             const repo = context.repo.repo;
             const bust = `${context.runNumber}`;
             const reportUrl = `https://${owner}.github.io/${repo}/?run=${bust}`;
-            const body = `## 📊 Test Report Updated
-
-**[Open Allure Dashboard →](${reportUrl})**
-
-Coverage • Modules • Failures • Timeline`;
+            const body = `## 📊 Test Report Generated\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline`;
             const { data: comments } = await github.rest.issues.listComments({
               owner, repo, issue_number: context.issue.number
             });
