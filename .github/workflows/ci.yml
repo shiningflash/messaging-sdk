@@ -103,7 +103,7 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const reportUrl = `https://${owner}.github.io/${repo}/`;
-            const body = `📊 **Test Report Ready**\n\n✅ View detailed Allure test report with module-wise results, failures, coverage trends, and build durations:\n\n🔗 [**Open Allure Report**](${reportUrl})\n\n---\n*Report includes: Test Suites, Failures, Coverage Trends, Execution Timeline, and Module-wise Breakdown.*`;
+            const body = `📊 **Test Report Ready**\n\nView detailed Allure test report with module-wise results, failures, coverage trends, and build durations:\n\n🔗 [**Open Allure Report**](${reportUrl})\n\n*Report includes: Test Suites, Failures, Coverage Trends, Execution Timeline, and Module-wise Breakdown.*`;
             
             github.rest.issues.createComment({
               issue_number: context.issue.number,
