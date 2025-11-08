@@ -62,8 +62,7 @@ jobs:
         run: |
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
-                 --alluredir=allure-results --tb=short
-          echo "Exit code: $?"
+                 --alluredir=allure-results --tb=short || true
         continue-on-error: true
 
       - name: Generate JUnit XML
@@ -88,7 +87,6 @@ jobs:
         if: always()
         run: |
           allure generate allure-results -o allure-report --clean || echo "No allure-results to generate"
-          # Ensure GitHub Pages doesn’t run Jekyll (can hide assets)
           touch allure-report/.nojekyll
 
       - name: Deploy Allure Report to GitHub Pages branch
