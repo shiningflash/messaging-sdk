@@ -1,0 +1,14 @@
+requests
+python-dotenv
+pytest
+pytest-mock
+flake8
+black
+mypy
+pydantic
+pytest-cov
+fastapi
+uvicorn
+pytest-asyncio
+httpx
+pydantic-settings
