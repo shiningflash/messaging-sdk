@@ -50,6 +50,13 @@ jobs:
                  --alluredir=allure-results > coverage.txt
           pytest --junitxml=pytest.xml
 
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          source venv/bin/activate
+          pip install allure-behave
+          allure generate allure-results -o allure-report --clean
+
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
