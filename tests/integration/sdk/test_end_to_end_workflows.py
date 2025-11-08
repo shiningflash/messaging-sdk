@@ -6,18 +6,26 @@ def test_send_and_check_message_workflow(messages, mock_api_client):
     Test the end-to-end workflow of sending a message and verifying its status.
     """
     # Step 1: Send a message
-    send_payload = {"to": "+123456789", "content": "Hello, World!", "sender": "+987654321"}  # Corrected sender format
+    send_payload = {
+        "to": {"id": "contact123"},  # Align with ContactID schema
+        "content": "Hello, World!",
+        "from": "+987654321"  # Use the correct field
+    }
     sent_message_response = {
         "id": "msg123",
-        "to": "+123456789",
+        "to": {
+            "id": "contact123",
+            "name": "John Doe",
+            "phone": "+123456789"
+        },
         "from": "+987654321",
         "content": "Hello, World!",
-        "sender": "+987654321",
         "status": "delivered",
         "createdAt": "2024-12-01T00:00:00Z",
     }
     mock_api_client.request.return_value = sent_message_response
 
+    # Send the message
     sent_message = messages.send_message(payload=send_payload)
     assert sent_message == sent_message_response, "Message sending failed."
 
@@ -88,13 +96,12 @@ def test_delete_contact_and_verify(contacts, mock_api_client):
     """
     Test the workflow of deleting a contact and verifying the deletion.
     """
-    # Step 1: Mock the response for deleting a contact
+    # Step 1: Mock the API response for deleting a contact
     contact_id = "contact123"
-    mock_api_client.request.return_value = {"success": True}
+    mock_api_client.request.return_value = None  # Simulate DELETE response (typically no content)
 
-    # Call the delete_contact method
-    delete_response = contacts.delete_contact(contact_id=contact_id)
-    assert delete_response == {"success": True}, "Contact deletion failed."
+    # Step 2: Call the delete_contact method
+    contacts.delete_contact(contact_id=contact_id)
 
-    # Assert the API call was made with correct parameters
+    # Step 3: Verify the API call was made with the correct parameters
     mock_api_client.request.assert_called_once_with("DELETE", f"/contacts/{contact_id}")

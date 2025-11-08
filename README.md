@@ -2,6 +2,8 @@
 
 A Python SDK designed to simplify interaction with the messaging API and webhook functionalities. It ensures seamless message management, automatic signature validation, and provides a robust foundation for developing scalable messaging applications.
 
+[![SDK Usage Documentation](https://img.shields.io/badge/Docs-SDK%20Usage%20Guide-blue?style=for-the-badge)](https://github.com/shiningflash/messaging-sdk/blob/main/docs/sdk_usage.md) [![Webhook Documentation](https://img.shields.io/badge/Docs-Webhook%20Guide-blue?style=for-the-badge)](https://github.com/shiningflash/messaging-sdk/blob/main/docs/webhook_guide.md)
+
 ---
 
 ## Table of Contents
@@ -80,32 +82,65 @@ The **Messaging SDK** is a Python library that allows developers to interact wit
 
 ### SDK Usage
 
-1. Initialize the SDK:
-   ```python
-   from src.sdk.client import ApiClient
-   from src.sdk.features.messages import Messages
+1. **Initialize the SDK:**
 
+   ```python
+   from sdk.client import ApiClient
+   from sdk.features.messages import Messages
+
+   # Initialize the API client and Messages module
    api_client = ApiClient()
    messages = Messages(api_client)
 
    # Send a message
    response = messages.send_message({
-       "to": "+123456789",
+       "to": {"id": "contact123"},  # Use the contact ID format for the recipient
        "content": "Hello, World!",
-       "sender": "+987654321"
+       "from": "+987654321"  # Sender's phone number
    })
    print(response)
    ```
 
-2. List messages:
+2. **List Messages:**
+
    ```python
+   # List sent messages with pagination
    response = messages.list_messages(page=1, limit=10)
    print(response)
    ```
-   
+
+   **Example Response:**
+   ```json
+   {
+       "messages": [
+           {
+               "id": "msg123",
+               "to": {
+                   "id": "contact123",
+                   "name": "John Doe",
+                   "phone": "+1234567890"
+               },
+               "from": "+987654321",
+               "content": "Hello, World!",
+               "status": "delivered",
+               "createdAt": "2024-12-01T00:00:00Z"
+           }
+       ],
+       "page": 1,
+       "quantityPerPage": 10
+   }
+   ```
+
+#### Additional Features
+
+- **Contact Management:** Add, update, delete, and list contacts.
+- **Webhook Integration:** Validate and handle webhook payloads with ease.
+
 #### Comprehensive User Guide for SDK Usage
 
-[![SDK Usage Documentation](https://img.shields.io/badge/Docs-SDK%20Usage%20Guide-blue?style=for-the-badge)](docs/sdk_usage.md)
+[![SDK Usage Documentation](https://img.shields.io/badge/Docs-SDK%20Usage%20Guide-blue?style=for-the-badge)](https://github.com/shiningflash/messaging-sdk/blob/main/docs/sdk_usage.md)
+
+---
 
 ### Webhook Setup
 
@@ -118,7 +153,7 @@ The **Messaging SDK** is a Python library that allows developers to interact wit
 
 #### Comprehensive User Guide for Webhook
 
-[![Webhook Documentation](https://img.shields.io/badge/Docs-Webhook%20Guide-blue?style=for-the-badge)](docs/webhook_guide.md)
+[![Webhook Documentation](https://img.shields.io/badge/Docs-Webhook%20Guide-blue?style=for-the-badge)](https://github.com/shiningflash/messaging-sdk/blob/main/docs/webhook_guide.md)
 
 ---
 
@@ -151,6 +186,10 @@ A detailed overview of the project structure, including descriptions of key file
 ├── .github/                   # GitHub workflows for CI/CD
 │   └── workflows/
 │       └── ci.yml             # Continuous Integration pipeline configuration
+├── docs/                      # Additional documentation
+│   ├── openapi.yaml           # OpenAPI docs
+│   ├── sdk_usage.md           # Comprehensive SDK usage documentation
+│   └── webhook_guide.md       # Webhook-specific documentation
 ├── src/                       # Source code directory
 │   ├── core/                  # Core modules for shared logic
 │   │   ├── __init__.py        # Core module initialization
@@ -211,10 +250,7 @@ A detailed overview of the project structure, including descriptions of key file
 ├── requirements.in            # Base Python dependencies
 ├── requirements.txt           # Locked Python dependencies
 ├── README.md                  # Project documentation and usage guide
-├── docs/                      # Additional documentation
-│   ├── openapi.yaml           # OpenAPI docs
-│   ├── sdk_usage.md           # Comprehensive SDK usage documentation
-│   └── webhook_guide.md       # Webhook-specific documentation
+├── setup.py                   # Setup file to enable 'pip install .'
 
 ```
 
@@ -335,7 +371,7 @@ Here is the comprehensive example for lifecycle of Messaging SDK and Webhook for
 |  Example Code:                                           |
 |  sdk.messages.send_message(                              |
 |      to="+123456789",                                    |
-|      sender="+987654321",                                |
+|      from_sender="+987654321",                                |
 |      content="Hello, World!"                             |
 |  )                                                       |
 +----------------------------------------------------------+
@@ -357,7 +393,7 @@ Here is the comprehensive example for lifecycle of Messaging SDK and Webhook for
 |  {                                                       |
 |      "to": "+123456789",                                 |
 |      "content": "Hello, World!",                         |
-|      "sender": "+987654321"                              |
+|      "from_sender": "+987654321"                              |
 |  }                                                       |
 +----------------------------------------------------------+
                              |

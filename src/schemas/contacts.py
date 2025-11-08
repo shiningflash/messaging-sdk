@@ -21,20 +21,6 @@ class CreateContactRequest(BaseModel):
         json_schema_extra={"example": "+1234567890"}
     )
 
-    @field_validator("name")
-    def validate_name(cls, value):
-        if len(value) < 1 or len(value) > 50:
-            raise ValueError("Name must be between 1 and 50 characters.")
-        return value
-
-    @field_validator("phone")
-    def validate_phone(cls, value):
-        if not value.startswith("+"):
-            raise ValueError("Phone numbers must start with a '+' prefix.")
-        if not value[1:].isdigit():
-            raise ValueError("Phone numbers must contain only digits after the '+' prefix.")
-        return value
-
 
 class Contact(BaseModel):
     """

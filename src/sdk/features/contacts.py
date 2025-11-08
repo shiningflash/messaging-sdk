@@ -109,8 +109,7 @@ class Contacts:
         """
         logger.info(f"Deleting contact with ID: {contact_id}")
         try:
-            response = self.client.request("DELETE", f"/contacts/{contact_id}")
+            self.client.request("DELETE", f"/contacts/{contact_id}")
             logger.info(f"Successfully deleted contact with ID: {contact_id}")
-            return response
         except HTTPStatusError as e:
             handle_404_error(e, contact_id, "Contact")

@@ -137,6 +137,33 @@ async def handle_webhook(
 
 ## Testing the Webhook
 
+Test the webhook by sending a simulated payload to it:
+
+```bash
+curl -X POST http://localhost:3010/webhooks \
+     -H "Authorization: Bearer <calculated-signature>" \
+     -d '{"id": "msg123", "status": "delivered", "deliveredAt": "2024-11-30T12:00:00Z"}'
+```
+
+For example,
+
+```bash
+secret="mySecret"
+payload='{"id": "msg123", "status": "delivered", "deliveredAt": "2024-11-30T12:00:00Z"}'
+signature=$(echo -n $payload | openssl dgst -sha256 -hmac $secret | awk '{print $2}')
+
+curl -X POST http://localhost:3010/webhooks \
+     -H "Authorization: Bearer $signature" \
+     -H "Content-Type: application/json" \
+     -d "$payload"
+```
+
+The response should be look like this,
+
+```
+{"message":"Webhook processed successfully."}
+```
+
 ### Unit Tests
 
 Run unit tests to verify webhook functionality:

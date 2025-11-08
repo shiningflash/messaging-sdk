@@ -82,7 +82,7 @@ def test_delete_contact_and_handle_absence(mock_api_client, contacts):
     # Step 1: Delete the contact
     contact_id = "contact123"
     delete_response = contacts.delete_contact(contact_id=contact_id)
-    assert delete_response == {"success": True}, "Failed to delete contact."
+    assert delete_response == None
 
     # Mock the API response for attempting to retrieve the deleted contact
     mock_api_client.request.side_effect = RuntimeError("Contact not found")

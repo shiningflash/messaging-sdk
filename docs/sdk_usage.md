@@ -1,6 +1,6 @@
 # SDK Usage Guide
 
-Welcome to the SDK Usage Guide for the **messaging-sdk**. This guide will walk you through the installation, configuration, and practical usage of the SDK, providing detailed examples and instructions for integrating the SDK into your applications.
+Welcome to the **messaging-sdk** SDK Usage Guide. This document provides detailed instructions for installing, configuring, and utilizing the SDK, including advanced features and best practices.
 
 ---
 
@@ -13,42 +13,64 @@ Welcome to the SDK Usage Guide for the **messaging-sdk**. This guide will walk y
     - [Sending Messages](#sending-messages)
     - [Managing Contacts](#managing-contacts)
 5. [Advanced Usage](#advanced-usage)
+    - [Pagination](#pagination)
+    - [Retry Mechanism](#retry-mechanism)
 6. [Error Handling](#error-handling)
 7. [Testing](#testing)
 8. [Logging](#logging)
+9. [Complete Functionalities](#complete-functionalities)
 
 ---
 
 ## Introduction
 
-The `messaging-sdk` is a Python library designed to simplify interactions with the messaging and contacts API. The SDK provides:
+The `messaging-sdk` is a Python library designed for seamless integration with messaging and contacts APIs. It provides:
 
-- Simplified API interactions without requiring manual configuration of authentication headers.
-- IDE-friendly auto-completion for seamless development.
-- Robust retry mechanisms for handling transient errors.
-- Built-in validation to ensure API requests meet expected formats.
+- Simplified API interactions with minimal setup.
+- Robust error handling and retry mechanisms.
+- Logging for debugging and monitoring.
+- Easy-to-use methods for sending messages and managing contacts.
 
 ---
 
 ## Installation
 
-To install the SDK, use `pip`:
+To install the SDK locally:
 
-```bash
-pip install -r requirements.txt
-```
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/shiningflash/messaging-sdk.git
+    cd messaging-sdk
+    ```
+
+2. Install additional dependencies if required:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ---
 
 ## Configuration
 
-1. Copy the `.env.example` file to `.env` in the root directory:
+1. Copy the `.env.example` file and rename it to `.env`:
 
     ```bash
     cp .env.example .env
     ```
 
-2. Open `.env` and update the variables accordingly.
+2. Open `.env` and configure the following variables:
+
+    - `BASE_URL`: Base URL for the API (e.g., `http://localhost:3000`).
+    - `API_KEY`: Your API key for authentication.
+    - `WEBHOOK_SECRET`: Secret key for validating webhooks.
+
+Install the SDK using pip in editable mode:
+
+```bash
+pip install -e .
+```
 
 ---
 
@@ -56,47 +78,49 @@ pip install -r requirements.txt
 
 ### Sending Messages
 
-The SDK provides a straightforward way to send messages:
+The SDK allows you to send messages easily:
 
 ```python
-from src.sdk.features.messages import Messages
-from src.sdk.client import ApiClient
+from sdk.client import ApiClient
+from sdk.features.messages import Messages
 
 client = ApiClient()
 messages = Messages(client)
 
 # Prepare the payload
 payload = {
-    "to": "+123456789",
+    "to": {"id": "contact-id"},  # Contact ID
     "content": "Hello, world!",
-    "sender": "+987654321"
+    "from": "+9876543210"  # Sender's phone number
 }
 
 # Send the message
 response = messages.send_message(payload=payload)
+print(response)
 ```
 
 ### Managing Contacts
 
-You can create, list, and delete contacts using the SDK:
+You can create, list, and delete contacts:
 
 ```python
-from src.sdk.features.contacts import Contacts
+from sdk.features.contacts import Contacts
 
 contacts = Contacts(client)
 
 # Create a new contact
 new_contact = {
     "name": "John Doe",
-    "phone": "+123456789"
+    "phone": "+1234567890"
 }
 response = contacts.create_contact(new_contact)
 
 # List all contacts
-contacts_list = contacts.list_contacts()
+contacts_list = contacts.list_contacts(page=1, max=5)
+print(contacts_list)
 
 # Delete a contact
-contacts.delete_contact(contact_id="contact123")
+contacts.delete_contact(contact_id="contact-id")
 ```
 
 ---
@@ -105,11 +129,11 @@ contacts.delete_contact(contact_id="contact123")
 
 ### Pagination
 
-Retrieve paginated lists for messages or contacts:
+The SDK supports pagination for listing messages and contacts:
 
 ```python
 # Retrieve paginated messages
-messages_list = messages.list_messages(page=1, limit=5)
+messages_list = messages.list_messages(page=1, limit=10)
 print(messages_list)
 
 # Retrieve paginated contacts
@@ -117,43 +141,45 @@ contacts_list = contacts.list_contacts(page=1, max=5)
 print(contacts_list)
 ```
 
-### Retry Mechanisms
+### Retry Mechanism
 
-The SDK automatically retries failed requests for transient errors (e.g., `503 Service Unavailable`). You can customize retry logic in the `src/sdk/utils/retry.py` module.
+The SDK automatically retries requests for transient errors (e.g., HTTP 503). The retry logic is located in `src/core/retry.py` and can be customized.
 
 ---
 
 ## Error Handling
 
-The SDK raises specific exceptions for various error scenarios:
+The SDK provides built-in exceptions for various scenarios:
 
-- `UnauthorizedError`: Raised for `401 Unauthorized` responses.
-- `NotFoundError`: Raised for `404 Not Found` responses.
-- `ServerError`: Raised for `500 Internal Server Error` responses.
-- `ApiError`: Raised for other unexpected API errors.
+- `UnauthorizedError`: Raised for authentication errors (`401 Unauthorized`).
+- `NotFoundError`: Raised when a resource is not found (`404 Not Found`).
+- `ServerError`: Raised for server-side errors (`500 Internal Server Error`).
+- `ContactNotFoundError`: Raised for missing contacts.
+- `MessageNotFoundError`: Raised for missing messages.
+- `ApiError`: Raised for other API-related issues.
 
 Example:
 
 ```python
 try:
-    messages.list_messages()
-except UnauthorizedError as e:
-    print(f"Authentication failed: {e}")
+    messages.get_message("invalid-id")
+except MessageNotFoundError as e:
+    print(f"Message not found: {e}")
 except ApiError as e:
-    print(f"Unexpected error: {e}")
+    print(f"API Error: {e}")
 ```
 
 ---
 
 ## Testing
 
-The SDK includes unit, integration, and end-to-end tests. To run all tests:
+Run tests using `pytest`:
 
 ```bash
 pytest
 ```
 
-To generate a coverage report:
+To check code coverage:
 
 ```bash
 pytest --cov=src --cov-report=term-missing
@@ -163,15 +189,31 @@ pytest --cov=src --cov-report=term-missing
 
 ## Logging
 
-The SDK includes comprehensive logging for debugging and auditing. Logs are categorized as follows:
+Logs provide detailed insights into SDK operations:
 
-- **Console Logs**: Informational and error logs for immediate feedback.
-- **File Logs**: Warnings and errors logged to `logs/app.log`.
+- **Console Logs**: Informational logs for debugging.
+- **File Logs**: Errors and warnings logged to `logs/app.log`.
 
-Example of enabling logger in your application:
+Example:
 
 ```python
-from src.core.logger import logger
+from sdk.core.logger import logger
 
-logger.info("Application started.")
+logger.info("Starting application...")
 ```
+
+---
+
+## Complete Functionalities
+
+### Messages
+
+- **Send Message**: `send_message(payload)`
+- **List Messages**: `list_messages(page, limit)`
+- **Get Message by ID**: `get_message(message_id)`
+
+### Contacts
+
+- **Create Contact**: `create_contact(contact_payload)`
+- **List Contacts**: `list_contacts(page, max)`
+- **Delete Contact**: `delete_contact(contact_id)`

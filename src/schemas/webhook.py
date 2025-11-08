@@ -6,6 +6,7 @@ from datetime import datetime
 class WebhookPayload(BaseModel):
     """
     Schema for webhook payloads received from the API server.
+    Represents the MessageDeliveryEvent schema from the OpenAPI specification.
 
     Attributes:
         id (str): Unique identifier for the message.

@@ -9,7 +9,11 @@ def test_send_message_and_verify(mock_api_client, messages):
     # Step 1: Mock the API response for sending a message
     send_response = {
         "id": "msg123",
-        "to": "+123456789",
+        "to": {
+            "id": "contact123",
+            "name": "John Doe",
+            "phone": "+123456789"
+        },
         "from": "+987654321",
         "content": "Hello, World!",
         "status": "delivered",
@@ -18,14 +22,22 @@ def test_send_message_and_verify(mock_api_client, messages):
     mock_api_client.request.return_value = send_response
 
     # Step 2: Send the message
-    send_payload = {"to": "+123456789", "content": "Hello, World!", "sender": "+987654321"}
+    send_payload = {
+        "to": {"id": "contact123"},  # Match the expected schema
+        "content": "Hello, World!",
+        "from": "+987654321"  # Use the correct field name
+    }
     sent_message = messages.send_message(payload=send_payload)
     assert sent_message == send_response, "Failed to send message."
 
     # Step 3: Mock the API response for retrieving the message
     retrieve_response = {
         "id": "msg123",
-        "to": "+123456789",
+        "to": {
+            "id": "contact123",
+            "name": "John Doe",
+            "phone": "+123456789"
+        },
         "from": "+987654321",
         "content": "Hello, World!",
         "status": "delivered",
@@ -90,7 +102,11 @@ def test_resend_failed_message(mock_api_client, messages):
     # Step 1: Mock the API response for retrieving a failed message
     retrieve_response = {
         "id": "msg123",
-        "to": "+123456789",
+        "to": {
+            "id": "contact123",
+            "name": "John Doe",
+            "phone": "+123456789"
+        },
         "from": "+987654321",
         "content": "Hello, World!",
         "status": "failed",
@@ -103,10 +119,18 @@ def test_resend_failed_message(mock_api_client, messages):
     assert failed_message == retrieve_response, "Failed to retrieve the failed message."
 
     # Step 3: Mock the API response for resending the message
-    resend_payload = {"to": "+123456789", "content": "Hello, World!", "sender": "+987654321"}
+    resend_payload = {
+        "to": {"id": "contact123"},  # Match the expected schema
+        "content": "Hello, World!",
+        "from": "+987654321"  # Use the correct field
+    }
     resend_response = {
         "id": "msg123",
-        "to": "+123456789",
+        "to": {
+            "id": "contact123",
+            "name": "John Doe",
+            "phone": "+123456789"
+        },
         "from": "+987654321",
         "content": "Hello, World!",
         "status": "delivered",

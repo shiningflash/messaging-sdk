@@ -1,3 +1,5 @@
+import os
+
 from pydantic import Field, field_validator, ConfigDict
 from pydantic_settings import BaseSettings
 from src.core.logger import logger
@@ -23,7 +25,7 @@ class Settings(BaseSettings):
         logger.info(f"Validated {field_name}: {value}")
         return value
 
-    model_config = ConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = ConfigDict(env_file=os.path.join(os.path.dirname(__file__), "../../.env"), env_file_encoding="utf-8")
 
 
 settings = Settings()

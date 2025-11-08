@@ -33,12 +33,19 @@ class Messages:
         Send a new message to a contact.
 
         Args:
-            payload (dict): A dictionary containing 'to', 'content', and 'sender'.
+            payload (dict): A dictionary containing 'to', 'content', and 'from_sender'.
 
         Returns:
             Message: The details of the sent message.
         """
-        logger.info(f"Sending message with payload: {payload}")
+        logger.info("Preparing to send a message.")
+        # Ensure the payload aligns with the API's expected format
+        if "from_sender" in payload:
+            payload["from"] = payload.pop("from_sender")
+        logger.debug(f"Transformed payload: {payload}")
+
+        # Make the API call to send the message
+        logger.info("Sending message request to the API.")
         return self.client.request("POST", "/messages", json=payload)
 
     @validate_response(ListMessagesResponse)
@@ -55,7 +62,7 @@ class Messages:
             ListMessagesResponse: A paginated list of sent messages.
         """
         params = {"page": page, "limit": limit}
-        logger.info(f"Listing messages with params: {params}")
+        logger.info(f"Requesting a list of messages with params: {params}")
         return self.client.request("GET", "/messages", params=params)
 
     @validate_response(Message)
@@ -70,13 +77,13 @@ class Messages:
         Returns:
             Message: The retrieved message details.
         """
-        logger.info(f"Fetching message with ID: {message_id}")
+        logger.info(f"Fetching message details for ID: {message_id}")
         try:
             return self.client.request("GET", f"/messages/{message_id}")
         except HTTPStatusError as e:
+            logger.error(f"Message with ID {message_id} not found.")
             handle_404_error(e, message_id, "Message")
-    
-    
+
     def validate_webhook_signature(self, raw_body: bytes, signature: str, secret: str):
         """
         Validate the webhook signature using the SDK.
@@ -89,5 +96,10 @@ class Messages:
         Raises:
             ValueError: If the signature validation fails.
         """
-        logger.info("Validating webhook signature through SDK.")
-        verify_signature(raw_body, signature, secret)
+        logger.info("Validating webhook signature via the SDK.")
+        try:
+            verify_signature(raw_body, signature, secret)
+            logger.info("Webhook signature successfully validated.")
+        except ValueError as e:
+            logger.error(f"Invalid webhook signature: {e}")
+            raise

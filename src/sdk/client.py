@@ -38,16 +38,16 @@ class ApiClient:
         if response.status_code == 401:
             logger.error(f"Unauthorized: {response.text}")
             raise UnauthorizedError("Unauthorized. Check your API key.")
-        elif response.status_code == 404:
+        if response.status_code == 404:
             logger.error(f"Resource Not Found: {response.text}")
             raise NotFoundError("Resource not found.")
-        elif response.status_code in (502, 503):
+        if response.status_code in (502, 503):
             logger.warning(f"Transient Error: {response.text}")
             raise TransientError("Transient server error. Please retry.", status_code=response.status_code)
-        elif response.status_code >= 500:
+        if response.status_code >= 500:
             logger.error(f"Server Error: {response.text}")
             raise ServerError("Server error. Please try again later.")
-        elif not response.ok:
+        if not response.ok:
             logger.error(f"Unhandled API Error: {response.status_code} - {response.text}")
             raise ApiError(f"Unhandled API Error: {response.status_code}: {response.text}")
 
@@ -77,6 +77,11 @@ class ApiClient:
         logger.info(f"Sending {method} request to {url} with headers {headers} and payload {kwargs}")
         response = requests.request(method, url, headers=headers, **kwargs)
         logger.info(f"Received response with status {response.status_code}")
+        
+        # Handle deletion api
+        if response.status_code == 204:
+            logger.info(f"Item successfully deleted.")
+            return None
 
         # Handle API errors
         self._handle_api_errors(response)

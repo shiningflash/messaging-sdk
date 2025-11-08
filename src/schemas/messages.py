@@ -1,42 +1,63 @@
 from pydantic import BaseModel, Field, field_validator, ConfigDict
-from typing import List, Literal
+from typing import List, Literal, Union, Optional
 from datetime import datetime
 
 
+class MessageContact(BaseModel):
+    """
+    Schema for a message contact, representing either a contact ID or full contact details.
+
+    Attributes:
+        id (str): The unique identifier of the contact.
+    """
+    id: str = Field(
+        ..., 
+        description="The unique identifier of the contact.", 
+        json_schema_extra={"example": "contact123"}
+    )
+
+
+class ContactDetails(BaseModel):
+    """
+    Schema for detailed contact information in a message.
+
+    Attributes:
+        name (str): The name of the contact.
+        phone (str): The phone number of the contact.
+        id (str): The unique identifier for the contact.
+    """
+    name: Optional[str] = Field(None, description="The name of the contact.", json_schema_extra={"example": "John Doe"})
+    phone: Optional[str] = Field(None, description="The phone number of the contact.", json_schema_extra={"example": "+123456789"})
+    id: str = Field(..., description="The unique ID of the contact.", json_schema_extra={"example": "contact-id-123"})
+    
+    
 class CreateMessageRequest(BaseModel):
     """
     Schema for creating a new message.
 
     Attributes:
-        to (str): Recipient's phone number in E.164 format.
+        to (Union[str, MessageContact]): Contact ID or full contact details of the recipient.
         content (str): Message content, with a maximum length of 160 characters.
-        sender (str): Sender's phone number in E.164 format.
+        from_sender (str): Sender's phone number in E.164 format.
     """
-    to: str = Field(
-        ...,
-        description="Recipient's phone number in E.164 format.",
-        json_schema_extra={"example": "+1234567890"}
+    to: MessageContact = Field(
+        ..., 
+        description="Recipient's contact ID.", 
+        json_schema_extra={"example": {"id": "contact123"}}
     )
     content: str = Field(
-        ...,
-        min_length=1,
-        max_length=160,
+        ..., 
+        min_length=1, 
+        max_length=160, 
         description="Message content, limited to 160 characters.",
         json_schema_extra={"example": "Hello, World!"}
     )
-    sender: str = Field(
-        ...,
+    from_sender: str = Field(
+        ..., 
+        alias="from", 
         description="Sender's phone number in E.164 format.",
         json_schema_extra={"example": "+0987654321"}
     )
-
-    @field_validator("to", "sender")
-    def validate_phone_number(cls, value):
-        if not value.startswith("+"):
-            raise ValueError("Phone numbers must include the '+' prefix.")
-        if not value[1:].isdigit():
-            raise ValueError("Phone numbers must contain only digits after the '+' prefix.")
-        return value
 
 
 class Message(BaseModel):
@@ -45,32 +66,64 @@ class Message(BaseModel):
 
     Attributes:
         id (str): Unique identifier for the message.
-        from_ (str): Sender's phone number.
-        to (str): Recipient's phone number.
+        from_sender (str): Sender's phone number.
+        to (Union[ContactDetails, str]): Recipient details or just contact ID.
         content (str): Message content.
         status (str): Message status, one of 'queued', 'delivered', or 'failed'.
         created_at (datetime): Timestamp when the message was created.
+        delivered_at (Optional[datetime]): Timestamp when the message was delivered.
     """
     id: str = Field(..., description="Unique identifier for the message.", json_schema_extra={"example": "msg123"})
-    from_: str = Field(
+    from_sender: str = Field(
         ..., 
         alias="from", 
         description="Sender's phone number.", 
         json_schema_extra={"example": "+0987654321"}
     )
-    to: str = Field(..., description="Recipient's phone number.", json_schema_extra={"example": "+1234567890"})
+    to: Union[ContactDetails, str] = Field(
+        ..., 
+        description="Recipient details or just contact ID."
+    )
     content: str = Field(..., description="Message content.", json_schema_extra={"example": "Hello, World!"})
     status: Literal["queued", "delivered", "failed"] = Field(
         ..., 
         description="Message status.", 
-        json_schema_extra={"example": "delivered"}
+        json_schema_extra={"example": "queued"}
     )
     created_at: datetime = Field(
         ..., 
         alias="createdAt", 
         description="Timestamp when the message was created.", 
-        json_schema_extra={"example": "2024-12-01T12:00:00Z"}
+        json_schema_extra={"example": "2024-12-06T03:01:37.416Z"}
     )
+    delivered_at: Optional[datetime] = Field(
+        None, 
+        alias="deliveredAt", 
+        description="Timestamp when the message was delivered.", 
+        json_schema_extra={"example": "2024-12-06T03:01:37.416Z"}
+    )
+
+    @classmethod
+    def validate_to_field(cls, value):
+        """
+        Custom validator for the 'to' field to normalize its structure.
+        """
+        if isinstance(value, str):
+            # Treat the string as a contact ID and wrap it in a ContactDetails object
+            return ContactDetails(id=value)
+        elif isinstance(value, dict):
+            # Parse it as a ContactDetails object
+            return ContactDetails(**value)
+        raise ValueError("'to' must be a valid contact ID (str) or ContactDetails object.")
+
+    @classmethod
+    def model_validate(cls, data):
+        """
+        Custom validation for the entire model to preprocess 'to'.
+        """
+        if "to" in data:
+            data["to"] = cls.validate_to_field(data["to"])
+        return super().model_validate(data)
 
     model_config = ConfigDict(
         populate_by_name=True,
