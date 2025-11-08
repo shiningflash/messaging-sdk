@@ -15,7 +15,6 @@ on:
     branches:
       - develop
       - main
-      - workflows-improvement
     paths:
       - "src/**"
       - "tests/**"
