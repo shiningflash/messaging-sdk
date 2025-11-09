@@ -1,0 +1,4 @@
+2025-11-09 00:53:12,947 - ERROR - logger.sdk - [API Error] 401: Unauthorized access.
+2025-11-09 00:53:12,947 - WARNING - logger.sdk - [UnauthorizedError] Ensure your API key is valid.
+2025-11-09 00:53:12,947 - INFO - logger.sdk - Fetching message details for ID: msg123
+2025-11-09 00:53:12,948 - ERROR - logger.sdk - [ApiError]: Unauthorized access. (HTTP 401)

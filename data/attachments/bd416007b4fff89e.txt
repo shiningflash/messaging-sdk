@@ -1,0 +1,7 @@
+WARNING  logger.sdk:validators.py:27 No payload provided for validation.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:contacts.py:40 Creating contact with payload: {'name': 'John Doe', 'phone': '+123456789'}
+ERROR    logger.sdk:validators.py:48 Response Validation Error: [{"type":"missing","loc":["id"],"msg":"Field required","input":{},"url":"https://errors.pydantic.dev/2.10/v/missing"},{"type":"missing","loc":["name"],"msg":"Field required","input":{},"url":"https://errors.pydantic.dev/2.10/v/missing"},{"type":"missing","loc":["phone"],"msg":"Field required","input":{},"url":"https://errors.pydantic.dev/2.10/v/missing"}]
+ERROR    logger.sdk:validators.py:50 Field: ('id',), Error: Field required
+ERROR    logger.sdk:validators.py:50 Field: ('name',), Error: Field required
+ERROR    logger.sdk:validators.py:50 Field: ('phone',), Error: Field required

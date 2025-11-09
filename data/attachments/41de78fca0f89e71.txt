@@ -1,0 +1,2 @@
+2025-11-09 00:53:12,894 - WARNING - logger.sdk - No payload provided for validation.
+2025-11-09 00:53:12,894 - INFO - logger.sdk - Updating contact 123 with payload: {'name': 'Jane Doe', 'phone': '+987654321'}
