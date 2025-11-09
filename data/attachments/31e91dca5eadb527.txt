@@ -1,0 +1,3 @@
+INFO     logger.sdk:security.py:42 Validating HMAC signature.
+ERROR    logger.sdk:security.py:50 Invalid HMAC signature.
+ERROR    logger.sdk:security.py:59 Error validating signature: Unauthorized: Signature validation failed.
