@@ -65,7 +65,7 @@ jobs:
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
                  --alluredir=allure-results --tb=short > coverage.txt 2>&1 || echo "TESTS_FAILED=true" >> $GITHUB_ENV
-          pytest --junitxml=pytest.xml
+          pytest --junitxml=pytest.xml || echo "TESTS_FAILED=true" >> $GITHUB_ENV
         continue-on-error: true
 
       - name: Pytest coverage comment
