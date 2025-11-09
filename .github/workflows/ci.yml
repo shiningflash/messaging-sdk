@@ -2,6 +2,7 @@ name: CI - Code Testing Workflow
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - develop
       - main
@@ -10,52 +11,133 @@ on:
     paths:
       - "src/**"
       - "tests/**"
-
-permissions:
-  contents: write
-  pull-requests: write
-  checks: write
+      - ".github/workflows/**"
+  push:
+    branches:
+      - develop
+      - main
+    paths:
+      - "src/**"
+      - "tests/**"
+      - ".github/workflows/**"
 
 jobs:
   test:
     name: Run Tests and Post Coverage
+    concurrency:
+      group: allure-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
-
-    env:  # Load environment variables from repository secrets
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
       BASE_URL: ${{ secrets.BASE_URL }}
       API_KEY: ${{ secrets.API_KEY }}
       WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
 
     steps:
-      # Step 1: Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
 
-      # Step 3: Install dependencies
+      - name: Set up Node (for Allure CLI)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
       - name: Install dependencies
         run: |
-          python -m venv venv                     # Create a virtual environment
-          source venv/bin/activate                # Activate the virtual environment
-          pip install --upgrade pip               # Upgrade pip
-          pip install pytest pytest-cov           # Install coverage tools
-          pip install -r requirements.txt         # Install project dependencies
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install pytest pytest-cov allure-pytest
+          pip install -r requirements.txt
+          npm install -g allure-commandline
 
-      # Step 4: Run tests with coverage
-      - name: Run tests with coverage
+      - name: Run tests (coverage + allure results)
+        id: run_tests
         run: |
           source venv/bin/activate
-          pytest --cov=src --cov-report=xml --cov-report=term > coverage.txt
-          pytest --junitxml=pytest.xml
+          pytest --cov=src --cov-report=xml --cov-report=term \
+                 --alluredir=allure-results --junitxml=pytest.xml --tb=short > coverage.txt 2>&1 || echo "TESTS_FAILED=true" >> $GITHUB_ENV
+        continue-on-error: true
 
-      # Step 5: Post coverage summary to the pull request
       - name: Pytest coverage comment
+        if: github.event_name == 'pull_request' && always()
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: ./coverage.txt
           junitxml-path: ./pytest.xml
+
+      - name: Pull previous Allure history (if exists)
+        if: always()
+        run: |
+          git fetch origin allure-report || true
+          if git ls-remote --exit-code origin allure-report; then
+            git checkout origin/allure-report -- history || true
+            if [ -d history ]; then
+              mkdir -p allure-results/history
+              cp -r history/* allure-results/history/ || true
+            fi
+          fi
+
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          allure generate allure-results -o allure-report --clean || echo "No allure-results to generate"
+          echo "<!-- build: run-${{ github.run_number }} -->" >> allure-report/index.html
+          touch allure-report/.nojekyll
+
+      - name: Deploy Allure Report to GitHub Pages branch
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: allure-report
+          publish_dir: ./allure-report
+          keep_files: true
+          force_orphan: false
+          commit_message: "docs(allure): update report for ${{ github.sha }} (run ${{ github.run_number }})"
+
+      - name: Comment PR with Allure Report URL
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const bust = `${context.runNumber}`;
+            const reportUrl = `https://${owner}.github.io/${repo}/?run=${bust}`;
+
+            // Determine test result color and icon
+            const testsFailed = process.env.TESTS_FAILED === 'true';
+            const badgeColor = testsFailed ? 'E63946' : '2EA44F'; // red : green
+            const testStatus = testsFailed ? '⚠️ (Some tests failed)' : '✅ All tests passed';
+
+            const body = `## 📊 Test Report ${testStatus}
+
+            Coverage trends • Module breakdown • Failure analysis • Execution timeline
+
+            [![View Allure Dashboard](https://img.shields.io/badge/View%20Dashboard-${badgeColor}?style=for-the-badge&logo=google-chrome&logoColor=white)](${reportUrl})
+
+            ⚠️ NB: If the dashboard doesn't update immediately, try a hard reload (Cmd + Shift + R on Mac) or open in incognito mode.`;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner, repo, issue_number: context.issue.number
+            });
+            const marker = '📊 Test Report';
+            const existing = comments.find(c => c.user.type === 'Bot' && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
+            }
+
+      - name: Fail job if tests failed
+        if: env.TESTS_FAILED == 'true'
+        run: exit 1
