@@ -1,0 +1,5 @@
+INFO     logger.sdk:client.py:77 Sending GET request to http://localhost:3000/contacts with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+INFO     logger.sdk:client.py:79 Received response with status 500
+ERROR    logger.sdk:client.py:48 Server Error: Internal Server Error
+ERROR    logger.sdk:api.py:18 [API Error] 500: Server error. Please try again later.
+ERROR    logger.sdk:api.py:47 [ServerError] The server encountered an issue.

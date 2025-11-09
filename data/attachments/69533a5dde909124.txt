@@ -1,0 +1,3 @@
+2025-11-09 01:58:31,815 - ERROR - logger.sdk - [API Error] 404: Contact not found.
+2025-11-09 01:58:31,815 - INFO - logger.sdk - Fetching contact with ID: non-existent
+2025-11-09 01:58:31,816 - ERROR - logger.sdk - [ApiError]: Contact not found. (HTTP 404)
