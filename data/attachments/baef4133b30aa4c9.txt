@@ -1,0 +1,3 @@
+INFO     logger.sdk:security.py:42 Validating HMAC signature.
+INFO     logger.sdk:security.py:55 HMAC signature validated successfully.
+INFO     logger.webhooks:app.py:38 Webhook received: {'id': 'msg123', 'status': 'delivered', 'delivered_at': datetime.datetime(2024, 12, 1, 12, 0, tzinfo=TzInfo(UTC))}
