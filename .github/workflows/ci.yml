@@ -65,6 +65,7 @@ jobs:
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
                  --alluredir=allure-results --tb=short > coverage.txt 2>&1 || echo "TESTS_FAILED=true" >> $GITHUB_ENV
+          pytest --junitxml=pytest.xml
         continue-on-error: true
 
       - name: Pytest coverage comment
@@ -113,8 +114,19 @@ jobs:
             const repo = context.repo.repo;
             const bust = `${context.runNumber}`;
             const reportUrl = `https://${owner}.github.io/${repo}/?run=${bust}`;
-            const testStatus = process.env.TESTS_FAILED === 'true' ? '⚠️ (1 test failed)' : '✅';
-            const body = `## 📊 Test Report ${testStatus}\n\n[![View Allure Dashboard](https://img.shields.io/badge/View%20Dashboard-1A73E8?style=for-the-badge&logo=google-chrome&logoColor=white)](${reportUrl})\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline\n\n ⚠️ NB: If the dashboard doesn't update immediately, try a hard reload (Cmd + Shift + R on Mac) or open in incognito mode.`;
+
+            // Determine test result color and icon
+            const testsFailed = process.env.TESTS_FAILED === 'true';
+            const badgeColor = testsFailed ? 'E63946' : '2EA44F'; // red : green
+            const testStatus = testsFailed ? '⚠️ (Some tests failed)' : '✅ All tests passed';
+
+            const body = `## 📊 Test Report ${testStatus}
+
+            Coverage trends • Module breakdown • Failure analysis • Execution timeline
+
+            [![View Allure Dashboard](https://img.shields.io/badge/View%20Dashboard-${badgeColor}?style=for-the-badge&logo=google-chrome&logoColor=white)](${reportUrl})
+
+            ⚠️ NB: If the dashboard doesn't update immediately, try a hard reload (Cmd + Shift + R on Mac) or open in incognito mode.`;
 
             const { data: comments } = await github.rest.issues.listComments({
               owner, repo, issue_number: context.issue.number
