@@ -1,0 +1,4 @@
+2025-11-09 01:48:32,007 - INFO - logger.sdk - Fetching message details for ID: msg123
+2025-11-09 01:48:32,008 - INFO - logger.sdk - Validating request payload: {'to': {'id': 'contact123'}, 'content': 'Hello, World!', 'from': '+987654321'}
+2025-11-09 01:48:32,008 - INFO - logger.sdk - Preparing to send a message.
+2025-11-09 01:48:32,008 - INFO - logger.sdk - Sending message request to the API.

@@ -1,0 +1,4 @@
+ERROR    logger.sdk:api.py:18 [API Error] 404: Message not found.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:messages.py:80 Fetching message details for ID: non-existent
+ERROR    logger.sdk:decorators.py:26 [ApiError]: Message not found. (HTTP 404)

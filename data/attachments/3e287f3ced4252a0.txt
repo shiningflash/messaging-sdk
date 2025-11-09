@@ -1,0 +1,2 @@
+2025-11-09 01:48:32,012 - WARNING - logger.sdk - No payload provided for validation.
+2025-11-09 01:48:32,013 - INFO - logger.sdk - Creating contact with payload: {'name': 'John Doe', 'phone': '+123456789'}

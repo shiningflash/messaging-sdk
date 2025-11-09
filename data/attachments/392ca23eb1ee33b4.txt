@@ -1,0 +1,6 @@
+WARNING  logger.sdk:validators.py:27 No payload provided for validation.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:messages.py:41 Preparing to send a message.
+DEBUG    logger.sdk:messages.py:45 Transformed payload: {'to': '+123456789', 'content': 'Hello, World!', 'sender': 'Sender123'}
+INFO     logger.sdk:messages.py:48 Sending message request to the API.
+DEBUG    logger.sdk:validators.py:45 Exiting validate_response decorator.
