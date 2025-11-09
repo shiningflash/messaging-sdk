@@ -64,8 +64,15 @@ jobs:
         run: |
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
-                 --alluredir=allure-results --tb=short || echo "TESTS_FAILED=true" >> $GITHUB_ENV
+                 --alluredir=allure-results --tb=short > coverage.txt 2>&1 || echo "TESTS_FAILED=true" >> $GITHUB_ENV
         continue-on-error: true
+
+      - name: Pytest coverage comment
+        if: github.event_name == 'pull_request' && always()
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./coverage.txt
+          junitxml-path: ./pytest.xml
 
       - name: Pull previous Allure history (if exists)
         if: always()
@@ -107,7 +114,8 @@ jobs:
             const bust = `${context.runNumber}`;
             const reportUrl = `https://${owner}.github.io/${repo}/?run=${bust}`;
             const testStatus = process.env.TESTS_FAILED === 'true' ? '⚠️ (1 test failed)' : '✅';
-            const body = `## 📊 Test Report ${testStatus}\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline\n\n⚠️NB: Use hard reload (Cmd + Shift + R on Mac), or use incognito mode if the changes doesn't appear in the dashboard`;
+            const body = `## 📊 Test Report ${testStatus}\n\n[![View Allure Dashboard](https://img.shields.io/badge/View%20Dashboard-1A73E8?style=for-the-badge&logo=google-chrome&logoColor=white)](${reportUrl})\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline\n\n ⚠️ NB: If the dashboard doesn't update immediately, try a hard reload (Cmd + Shift + R on Mac) or open in incognito mode.`;
+
             const { data: comments } = await github.rest.issues.listComments({
               owner, repo, issue_number: context.issue.number
             });
