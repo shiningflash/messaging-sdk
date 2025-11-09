@@ -85,15 +85,6 @@ jobs:
           allure generate allure-results -o allure-report --clean || echo "No allure-results to generate"
           echo "<!-- build: run-${{ github.run_number }} -->" >> allure-report/index.html
           touch allure-report/.nojekyll
-      
-      - name: Add cache-busting marker file
-        if: always()
-        run: |
-          echo "run-${{ github.run_number }}-$(date +%s)" > allure-report/build_version.txt
-      
-      - name: Wait for filesystem sync
-        if: always()
-        run: sleep 3
 
       - name: Deploy Allure Report to GitHub Pages branch
         if: always()
@@ -116,7 +107,7 @@ jobs:
             const bust = `${context.runNumber}`;
             const reportUrl = `https://${owner}.github.io/${repo}/?run=${bust}`;
             const testStatus = process.env.TESTS_FAILED === 'true' ? '⚠️ (1 test failed)' : '✅';
-            const body = `## 📊 Test Report ${testStatus}\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline`;
+            const body = `## 📊 Test Report ${testStatus}\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline\n\n⚠️NB: Use hard reload (Cmd + Shift + R on Mac), or use incognito mode if the changes doesn't appear in the dashboard`;
             const { data: comments } = await github.rest.issues.listComments({
               owner, repo, issue_number: context.issue.number
             });
