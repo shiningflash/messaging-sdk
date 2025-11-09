@@ -1,0 +1,3 @@
+2025-11-09 10:04:56,523 - INFO - logger.sdk - Validating HMAC signature.
+2025-11-09 10:04:56,523 - ERROR - logger.sdk - Invalid HMAC signature.
+2025-11-09 10:04:56,523 - ERROR - logger.sdk - Error validating signature: Unauthorized: Signature validation failed.

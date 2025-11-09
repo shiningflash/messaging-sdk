@@ -1,0 +1,6 @@
+ERROR    logger.sdk:api.py:18 [API Error] 404: Resource not found.
+WARNING  logger.sdk:api.py:39 [NotFoundError] Resource does not exist.
+WARNING  logger.sdk:validators.py:27 No payload provided for validation.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:contacts.py:93 Updating contact non-existent with payload: {'name': 'Jane Doe', 'phone': '+987654321'}
+ERROR    logger.sdk:decorators.py:26 [ApiError]: Resource not found. (HTTP 404)

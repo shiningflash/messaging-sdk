@@ -1,0 +1,18 @@
+2025-11-09 10:04:50,424 - INFO - logger.sdk - Sending GET request to http://localhost:3000/contacts with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+2025-11-09 10:04:50,424 - INFO - logger.sdk - Received response with status 503
+2025-11-09 10:04:50,425 - WARNING - logger.sdk - Transient Error: <MagicMock name='mock.text' id='139922494553776'>
+2025-11-09 10:04:50,425 - ERROR - logger.sdk - [API Error] 503: Transient server error. Please retry.
+2025-11-09 10:04:50,425 - WARNING - logger.sdk - [TransientError] Transient server error. Please retry. (HTTP 503)
+2025-11-09 10:04:50,425 - WARNING - logger.sdk - Retrying due to Transient server error. Please retry. (HTTP 503) (attempt 1/3)...
+2025-11-09 10:04:52,427 - INFO - logger.sdk - Sending GET request to http://localhost:3000/contacts with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+2025-11-09 10:04:52,428 - INFO - logger.sdk - Received response with status 503
+2025-11-09 10:04:52,428 - WARNING - logger.sdk - Transient Error: <MagicMock name='mock.text' id='139922494553776'>
+2025-11-09 10:04:52,428 - ERROR - logger.sdk - [API Error] 503: Transient server error. Please retry.
+2025-11-09 10:04:52,428 - WARNING - logger.sdk - [TransientError] Transient server error. Please retry. (HTTP 503)
+2025-11-09 10:04:52,428 - WARNING - logger.sdk - Retrying due to Transient server error. Please retry. (HTTP 503) (attempt 2/3)...
+2025-11-09 10:04:54,431 - INFO - logger.sdk - Sending GET request to http://localhost:3000/contacts with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+2025-11-09 10:04:54,431 - INFO - logger.sdk - Received response with status 503
+2025-11-09 10:04:54,431 - WARNING - logger.sdk - Transient Error: <MagicMock name='mock.text' id='139922494553776'>
+2025-11-09 10:04:54,431 - ERROR - logger.sdk - [API Error] 503: Transient server error. Please retry.
+2025-11-09 10:04:54,431 - WARNING - logger.sdk - [TransientError] Transient server error. Please retry. (HTTP 503)
+2025-11-09 10:04:54,432 - WARNING - logger.sdk - Retrying due to Transient server error. Please retry. (HTTP 503) (attempt 3/3)...
