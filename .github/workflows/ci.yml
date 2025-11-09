@@ -59,25 +59,21 @@ jobs:
           pip install -r requirements.txt
           npm install -g allure-commandline
 
-      # -------------------------------
-      # Run tests normally (don't ignore failures)
-      # -------------------------------
+      # -------------------------------------------------
+      # Run tests, capture exit code (so report still runs)
+      # -------------------------------------------------
       - name: Run tests (coverage + allure results)
         id: run_tests
         run: |
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
-                 --alluredir=allure-results --tb=short || echo "exit_code=$?" >> $GITHUB_OUTPUT
+                 --alluredir=allure-results --tb=short
+          echo "exit_code=$?" >> $GITHUB_OUTPUT || echo "exit_code=0" >> $GITHUB_OUTPUT
+        continue-on-error: true   # let next steps execute even if pytest fails
 
-      # -------------------------------
-      # Always generate reports (even if tests failed)
-      # -------------------------------
-      - name: Generate JUnit XML
-        if: always()
-        run: |
-          source venv/bin/activate
-          pytest --junitxml=pytest.xml --tb=short || true
-
+      # -------------------------------------------------
+      # Generate report and coverage regardless of status
+      # -------------------------------------------------
       - name: Pull previous Allure history (if exists)
         if: always()
         run: |
@@ -128,9 +124,9 @@ jobs:
               await github.rest.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
             }
 
-      # -------------------------------
-      # Explicitly fail job if tests failed
-      # -------------------------------
+      # -------------------------------------------------
+      # Explicitly fail job if pytest exit code != 0
+      # -------------------------------------------------
       - name: Fail job if tests failed
-        if: ${{ steps.run_tests.outputs.exit_code != '' && steps.run_tests.outputs.exit_code != '0' }}
+        if: ${{ steps.run_tests.outcome == 'failure' }}
         run: exit 1
