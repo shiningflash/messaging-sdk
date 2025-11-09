@@ -22,13 +22,19 @@ on:
       - ".github/workflows/**"
 
 jobs:
-  tests:
-    name: 🧪 Run Tests and Collect Results
+  test:
+    name: Run Tests and Post Coverage
+    concurrency:
+      group: allure-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-    outputs:
-      test_outcome: ${{ steps.run_tests.outcome }}
+      contents: write
+      pull-requests: write
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      API_KEY: ${{ secrets.API_KEY }}
+      WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
 
     steps:
       - name: Checkout code
@@ -39,6 +45,11 @@ jobs:
         with:
           python-version: "3.9"
 
+      - name: Set up Node (for Allure CLI)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
       - name: Install dependencies
         run: |
           python -m venv venv
@@ -46,48 +57,18 @@ jobs:
           pip install --upgrade pip
           pip install pytest pytest-cov allure-pytest
           pip install -r requirements.txt
+          npm install -g allure-commandline
 
-      - name: Run tests
+      - name: Run tests (coverage + allure results)
         id: run_tests
-        continue-on-error: true
         run: |
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
-                 --alluredir=allure-results --tb=short
-          echo "exit_code=$?" >> $GITHUB_OUTPUT
-
-      - name: Upload allure-results artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results
-
-  report:
-    name: 📊 Generate and Publish Allure Report
-    runs-on: ubuntu-latest
-    needs: tests
-    if: always()  # run even if tests failed
-    permissions:
-      contents: write
-      pull-requests: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
-      - name: Download allure-results artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results
+                 --alluredir=allure-results --tb=short || echo "TESTS_FAILED=true" >> $GITHUB_ENV
+        continue-on-error: true
 
       - name: Pull previous Allure history (if exists)
+        if: always()
         run: |
           git fetch origin allure-report || true
           if git ls-remote --exit-code origin allure-report; then
@@ -99,12 +80,13 @@ jobs:
           fi
 
       - name: Generate Allure Report
+        if: always()
         run: |
-          npm install -g allure-commandline
           allure generate allure-results -o allure-report --clean || echo "No allure-results to generate"
           touch allure-report/.nojekyll
 
-      - name: Deploy Allure Report to GitHub Pages
+      - name: Deploy Allure Report to GitHub Pages branch
+        if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -115,7 +97,7 @@ jobs:
           commit_message: "docs(allure): update report for ${{ github.sha }} (run ${{ github.run_number }})"
 
       - name: Comment PR with Allure Report URL
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && always()
         uses: actions/github-script@v7
         with:
           script: |
@@ -123,8 +105,8 @@ jobs:
             const repo = context.repo.repo;
             const bust = `${context.runNumber}`;
             const reportUrl = `https://${owner}.github.io/${repo}/?run=${bust}`;
-            const outcome = "${{ needs.tests.result }}" === "success" ? "✅ Tests Passed" : "❌ Tests Failed";
-            const body = `## ${outcome}\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline`;
+            const testStatus = process.env.TESTS_FAILED === 'true' ? '⚠️ (1 test failed)' : '✅';
+            const body = `## 📊 Test Report ${testStatus}\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline`;
             const { data: comments } = await github.rest.issues.listComments({
               owner, repo, issue_number: context.issue.number
             });
@@ -135,3 +117,7 @@ jobs:
             } else {
               await github.rest.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
             }
+
+      - name: Fail job if tests failed
+        if: env.TESTS_FAILED == 'true'
+        run: exit 1
