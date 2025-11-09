@@ -1,0 +1,5 @@
+INFO     logger.sdk:contacts.py:110 Deleting contact with ID: contact123
+INFO     logger.sdk:contacts.py:113 Successfully deleted contact with ID: contact123
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:contacts.py:73 Fetching contact with ID: contact123
+ERROR    logger.sdk:decorators.py:29 [Unhandled Exception]: Contact not found
