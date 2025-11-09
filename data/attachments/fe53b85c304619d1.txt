@@ -1,0 +1,2 @@
+INFO     logger.sdk:contacts.py:110 Deleting contact with ID: 123
+INFO     logger.sdk:contacts.py:113 Successfully deleted contact with ID: 123

@@ -1,0 +1,5 @@
+2025-11-09 01:24:30,443 - ERROR - logger.sdk - [API Error] 404: Resource not found.
+2025-11-09 01:24:30,443 - WARNING - logger.sdk - [NotFoundError] Resource does not exist.
+2025-11-09 01:24:30,444 - WARNING - logger.sdk - No payload provided for validation.
+2025-11-09 01:24:30,444 - INFO - logger.sdk - Updating contact non-existent with payload: {'name': 'Jane Doe', 'phone': '+987654321'}
+2025-11-09 01:24:30,444 - ERROR - logger.sdk - [ApiError]: Resource not found. (HTTP 404)
