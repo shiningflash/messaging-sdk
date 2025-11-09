@@ -22,19 +22,13 @@ on:
       - ".github/workflows/**"
 
 jobs:
-  test:
-    name: Run Tests and Post Coverage
-    concurrency:
-      group: allure-${{ github.event.pull_request.number || github.ref }}
-      cancel-in-progress: true
+  tests:
+    name: 🧪 Run Tests and Collect Results
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
-    env:
-      BASE_URL: ${{ secrets.BASE_URL }}
-      API_KEY: ${{ secrets.API_KEY }}
-      WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+      contents: read
+    outputs:
+      test_outcome: ${{ steps.run_tests.outcome }}
 
     steps:
       - name: Checkout code
@@ -45,11 +39,6 @@ jobs:
         with:
           python-version: "3.9"
 
-      - name: Set up Node (for Allure CLI)
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
       - name: Install dependencies
         run: |
           python -m venv venv
@@ -57,25 +46,48 @@ jobs:
           pip install --upgrade pip
           pip install pytest pytest-cov allure-pytest
           pip install -r requirements.txt
-          npm install -g allure-commandline
 
-      # -------------------------------------------------
-      # Run tests, capture exit code (so report still runs)
-      # -------------------------------------------------
-      - name: Run tests (coverage + allure results)
+      - name: Run tests
         id: run_tests
+        continue-on-error: true
         run: |
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
                  --alluredir=allure-results --tb=short
-          echo "exit_code=$?" >> $GITHUB_OUTPUT || echo "exit_code=0" >> $GITHUB_OUTPUT
-        continue-on-error: true   # let next steps execute even if pytest fails
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
 
-      # -------------------------------------------------
-      # Generate report and coverage regardless of status
-      # -------------------------------------------------
-      - name: Pull previous Allure history (if exists)
+      - name: Upload allure-results artifact
         if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+  report:
+    name: 📊 Generate and Publish Allure Report
+    runs-on: ubuntu-latest
+    needs: tests
+    if: always()  # run even if tests failed
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Download allure-results artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Pull previous Allure history (if exists)
         run: |
           git fetch origin allure-report || true
           if git ls-remote --exit-code origin allure-report; then
@@ -87,13 +99,12 @@ jobs:
           fi
 
       - name: Generate Allure Report
-        if: always()
         run: |
+          npm install -g allure-commandline
           allure generate allure-results -o allure-report --clean || echo "No allure-results to generate"
           touch allure-report/.nojekyll
 
-      - name: Deploy Allure Report to GitHub Pages branch
-        if: always()
+      - name: Deploy Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -112,7 +123,8 @@ jobs:
             const repo = context.repo.repo;
             const bust = `${context.runNumber}`;
             const reportUrl = `https://${owner}.github.io/${repo}/?run=${bust}`;
-            const body = `## 📊 Test Report Generated\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline`;
+            const outcome = "${{ needs.tests.result }}" === "success" ? "✅ Tests Passed" : "❌ Tests Failed";
+            const body = `## ${outcome}\n\n**[View Allure Dashboard →](${reportUrl})**\n\nCoverage trends • Module breakdown • Failure analysis • Execution timeline`;
             const { data: comments } = await github.rest.issues.listComments({
               owner, repo, issue_number: context.issue.number
             });
@@ -123,10 +135,3 @@ jobs:
             } else {
               await github.rest.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
             }
-
-      # -------------------------------------------------
-      # Explicitly fail job if pytest exit code != 0
-      # -------------------------------------------------
-      - name: Fail job if tests failed
-        if: ${{ steps.run_tests.outcome == 'failure' }}
-        run: exit 1
