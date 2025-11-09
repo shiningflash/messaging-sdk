@@ -85,6 +85,15 @@ jobs:
           allure generate allure-results -o allure-report --clean || echo "No allure-results to generate"
           echo "<!-- build: run-${{ github.run_number }} -->" >> allure-report/index.html
           touch allure-report/.nojekyll
+      
+      - name: Add cache-busting marker file
+        if: always()
+        run: |
+          echo "run-${{ github.run_number }}-$(date +%s)" > allure-report/build_version.txt
+      
+      - name: Wait for filesystem sync
+        if: always()
+        run: sleep 3
 
       - name: Deploy Allure Report to GitHub Pages branch
         if: always()
