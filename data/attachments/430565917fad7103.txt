@@ -1,0 +1,5 @@
+2025-11-09 02:17:41,885 - INFO - logger.sdk - Sending GET request to http://localhost:3000/contacts with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+2025-11-09 02:17:41,885 - INFO - logger.sdk - Received response with status 401
+2025-11-09 02:17:41,885 - ERROR - logger.sdk - Unauthorized: Unauthorized
+2025-11-09 02:17:41,885 - ERROR - logger.sdk - [API Error] 401: Unauthorized. Check your API key.
+2025-11-09 02:17:41,885 - WARNING - logger.sdk - [UnauthorizedError] Ensure your API key is valid.

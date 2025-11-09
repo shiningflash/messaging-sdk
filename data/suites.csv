@@ -1,101 +1,101 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"Test handling of an invalid response from the API.","2","test_create_contact_invalid_response","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
-"
-    Test the workflow of deleting a contact and verifying the deletion.
-    ","1","test_delete_contact_and_verify","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_end_to_end_workflows","",""
-"
-    Test the workflow of listing contacts and messages.
-    ","1","test_list_contacts_and_messages_workflow","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_end_to_end_workflows","",""
-"Test deleting a contact successfully.","0","test_delete_contact_success","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
-"Test successfully retrieving a specific contact.","1","test_get_contact_success","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
-"Test validation error when payload is invalid.","1","test_send_message_validation_error","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_messages","",""
-"
-    Test sending a message successfully.
-    ","1","test_send_message_success","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_integration","",""
-"Test retry logic for transient errors.","6011","test_retry_logic","tests.unit.sdk","Sun Nov 09 02:14:49 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_client","",""
-"Test retrieving a contact that does not exist.","1","test_get_contact_not_found","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
-"Test deleting a non-existent contact.","1","test_delete_contact_not_found","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
-"Test creating a contact successfully.","1","test_create_contact_success","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
-"Test API error during message sending.","1","test_send_message_api_error","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_messages","",""
-"Test successfully sending a message.","1","test_send_message_success","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_messages","",""
-"","2","test_webhook_invalid_payload","tests.unit.server","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_route","",""
-"","4","test_webhook_valid_request","tests.unit.server","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_route","",""
-"
-    Test retrieving a specific message successfully.
-    ","1","test_get_message_success","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_integration","",""
-"Test validation error when creating a contact with invalid data.","1","test_create_contact_validation_error","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
-"
-    E2E Test: Update a contact and verify the updated details.
-    ","1","test_update_contact_and_verify","tests.e2e","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_e2e","",""
 "
     Test sending a message with an invalid payload.
 
     - The payload validation should fail.
     - The `request` method of the mocked client should never be called.
-    ","1","test_send_message_validation_error","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_integration","",""
-"Test retrieving a message that does not exist.","1","test_get_message_not_found","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_integration","",""
-"Test a successful API request.","2","test_request_success","tests.unit.sdk","Sun Nov 09 02:14:49 UTC 2025","passed","Sun Nov 09 02:14:49 UTC 2025","","test_client","",""
+    ","1","test_send_message_validation_error","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_integration","",""
 "
-    E2E Test: Delete a contact and verify it cannot be retrieved afterward.
-    ","2","test_delete_contact_and_handle_absence","tests.e2e","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_e2e","",""
-"Test deleting a contact that does not exist.","1","test_delete_contact_not_found","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
+    Test unauthorized access when retrieving a message.
+    ","1","test_get_message_unauthorized","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_integration","",""
 "
-    Test error when listing messages.
-    ","1","test_list_messages_error","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_integration","",""
-"","0","test_valid_signature","tests.unit.server","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_signature_validation","",""
-"Test successfully deleting a contact.","0","test_delete_contact_success","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
-"Test successfully creating a contact.","1","test_create_contact_success","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
+    E2E Test: Update a contact and verify the updated details.
+    ","1","test_update_contact_and_verify","tests.e2e","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_e2e","",""
+"Test deleting a contact successfully.","0","test_delete_contact_success","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
 "
-    E2E Test: Create a contact and then retrieve it to verify it was saved correctly.
-    ","1","test_create_and_retrieve_contact","tests.e2e","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_e2e","",""
+    Test sending a message successfully.
+    ","1","test_send_message_success","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_integration","",""
+"Test retrieving a non-existent contact.","1","test_get_contact_not_found","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
+"Test 404 NotFoundError.","1","test_request_not_found","tests.unit.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_client","",""
+"
+    Test the end-to-end workflow of sending a message and verifying its status.
+    ","2","test_send_and_check_message_workflow","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_end_to_end_workflows","",""
+"Test successfully retrieving a specific contact.","1","test_get_contact_success","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
+"","3","test_webhook_valid_request","tests.unit.server","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_route","",""
+"Test retry logic for transient errors.","6011","test_retry_logic","tests.unit.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_client","",""
+"Test API error during contact creation.","1","test_create_contact_api_error","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
+"
+    Test listing messages with pagination successfully.
+    ","1","test_list_messages_success","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_integration","",""
+"Test successfully creating a contact.","0","test_create_contact_success","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
 "
     Test creating a contact with missing required fields.
 
     - The payload validation should fail.
     - The `request` method of the mocked client should never be called.
-    ","1","test_create_contact_missing_fields","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
+    ","1","test_create_contact_missing_fields","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
+"Test updating a contact successfully.","1","test_update_contact_success","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
+"","2","test_webhook_invalid_payload","tests.unit.server","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_route","",""
+"Test updating a non-existent contact.","1","test_update_contact_not_found","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
+"Test validation error when payload is invalid.","1","test_send_message_validation_error","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_messages","",""
+"Test successfully listing contacts.","0","test_list_contacts_success","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
+"Test creating a contact successfully.","1","test_create_contact_success","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
 "
-    Test listing messages with pagination successfully.
-    ","1","test_list_messages_success","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_integration","",""
-"Test 401 UnauthorizedError.","2","test_request_unauthorized","tests.unit.sdk","Sun Nov 09 02:14:49 UTC 2025","passed","Sun Nov 09 02:14:49 UTC 2025","","test_client","",""
+    E2E Test: Simulate resending a failed message using send_message.
+    ","1","test_resend_failed_message","tests.e2e","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_e2e","",""
+"Test API error during message sending.","1","test_send_message_api_error","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_messages","",""
+"
+    E2E Test: List contacts with pagination and verify the correct data is returned.
+    ","1","test_list_contacts_with_pagination","tests.e2e","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_e2e","",""
+"Test successfully sending a message.","1","test_send_message_success","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_messages","",""
+"
+    E2E Test: Create a contact and then retrieve it to verify it was saved correctly.
+    ","1","test_create_and_retrieve_contact","tests.e2e","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_e2e","",""
+"Test deleting a non-existent contact.","1","test_delete_contact_not_found","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
+"
+    Test the workflow of deleting a contact and verifying the deletion.
+    ","0","test_delete_contact_and_verify","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_end_to_end_workflows","",""
+"Test 500 ServerError.","1","test_request_server_error","tests.unit.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_client","",""
+"
+    E2E Test: List messages with pagination and verify the correct data is returned.
+    ","0","test_list_messages_with_pagination","tests.e2e","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_e2e","",""
+"","0","test_valid_signature","tests.unit.server","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_signature_validation","",""
+"
+    E2E Test: Send a message and verify it is successfully sent.
+    ","1","test_send_message_and_verify","tests.e2e","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_e2e","",""
+"Test validation error when creating a contact with invalid data.","1","test_create_contact_validation_error","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
+"Test retrieving a contact successfully by ID.","1","test_get_contact_success","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
+"
+    Test the workflow of listing contacts and messages.
+    ","1","test_list_contacts_and_messages_workflow","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_end_to_end_workflows","",""
+"","3","test_webhook_invalid_signature","tests.unit.server","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_route","",""
+"Test successfully deleting a contact.","1","test_delete_contact_success","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
+"Test retrieving a message that does not exist.","1","test_get_message_not_found","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_integration","",""
+"","0","test_invalid_signature","tests.unit.server","Sun Nov 09 02:17:48 UTC 2025","passed","Sun Nov 09 02:17:48 UTC 2025","","test_signature_validation","",""
+"Test deleting a contact that does not exist.","1","test_delete_contact_not_found","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
+"Test a generic ApiError for unexpected status codes.","1","test_request_generic_error","tests.unit.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_client","",""
+"Test successfully updating a contact.","1","test_update_contact_success","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
+"
+    E2E Test: Delete a contact and verify it cannot be retrieved afterward.
+    ","1","test_delete_contact_and_handle_absence","tests.e2e","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_e2e","",""
+"Test a successful API request.","1","test_request_success","tests.unit.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_client","",""
+"","1","test_empty_signature","tests.unit.server","Sun Nov 09 02:17:48 UTC 2025","passed","Sun Nov 09 02:17:48 UTC 2025","","test_signature_validation","",""
+"Test retrieving a contact that does not exist.","1","test_get_contact_not_found","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
+"
+    Test error when listing messages.
+    ","0","test_list_messages_error","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_integration","",""
+"Test handling of an invalid response from the API.","1","test_create_contact_invalid_response","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_integration","",""
 "
     Integration test for webhook processing.
     Verifies the full request-response lifecycle.
-    ","84","test_integration_webhook_processing","tests.integration.server","Sun Nov 09 02:14:49 UTC 2025","passed","Sun Nov 09 02:14:49 UTC 2025","","test_webhook","",""
-"Test 404 NotFoundError.","1","test_request_not_found","tests.unit.sdk","Sun Nov 09 02:14:49 UTC 2025","passed","Sun Nov 09 02:14:49 UTC 2025","","test_client","",""
-"Test updating a contact successfully.","1","test_update_contact_success","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
+    ","83","test_integration_webhook_processing","tests.integration.server","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_webhook","",""
 "
-    Test the end-to-end workflow of sending a message and verifying its status.
-    ","1","test_send_and_check_message_workflow","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_end_to_end_workflows","",""
-"
-    E2E Test: Send a message and verify it is successfully sent.
-    ","1","test_send_message_and_verify","tests.e2e","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_e2e","",""
-"Test retrieving a non-existent contact.","1","test_get_contact_not_found","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
-"Test successfully updating a contact.","1","test_update_contact_success","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
-"Test retrieving a contact successfully by ID.","1","test_get_contact_success","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
-"","3","test_webhook_invalid_signature","tests.unit.server","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_route","",""
-"Test updating a non-existent contact.","1","test_update_contact_not_found","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
-"","1","test_invalid_signature","tests.unit.server","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_signature_validation","",""
-"Test successfully retrieving a specific message.","0","test_get_message_success","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_messages","",""
-"Test a generic ApiError for unexpected status codes.","1","test_request_generic_error","tests.unit.sdk","Sun Nov 09 02:14:49 UTC 2025","passed","Sun Nov 09 02:14:49 UTC 2025","","test_client","",""
-"Test listing contacts successfully with pagination.","0","test_list_contacts_success","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
-"
-    Test unauthorized access when retrieving a message.
-    ","1","test_get_message_unauthorized","tests.integration.sdk","Sun Nov 09 02:14:49 UTC 2025","passed","Sun Nov 09 02:14:49 UTC 2025","","test_messages_integration","",""
-"Test successfully listing contacts.","0","test_list_contacts_success","tests.integration.sdk","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_integration","",""
-"Test 500 ServerError.","1","test_request_server_error","tests.unit.sdk","Sun Nov 09 02:14:49 UTC 2025","passed","Sun Nov 09 02:14:49 UTC 2025","","test_client","",""
+    Test retrieving a specific message successfully.
+    ","1","test_get_message_success","tests.integration.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_messages_integration","",""
+"Test listing contacts successfully with pagination.","1","test_list_contacts_success","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_contacts","",""
+"Test successfully retrieving a specific message.","1","test_get_message_success","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_messages","",""
+"Test successfully listing messages.","0","test_list_messages_success","tests.unit.sdk","Sun Nov 09 02:17:47 UTC 2025","passed","Sun Nov 09 02:17:47 UTC 2025","","test_messages","",""
+"Test 401 UnauthorizedError.","1","test_request_unauthorized","tests.unit.sdk","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_client","",""
 "
     E2E Test: Attempt to create a duplicate contact and verify the correct error is raised.
-    ","1","test_create_duplicate_contact_error","tests.e2e","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_e2e","",""
-"Test API error during contact creation.","1","test_create_contact_api_error","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_contacts","",""
-"
-    E2E Test: List messages with pagination and verify the correct data is returned.
-    ","1","test_list_messages_with_pagination","tests.e2e","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_e2e","",""
-"
-    E2E Test: List contacts with pagination and verify the correct data is returned.
-    ","1","test_list_contacts_with_pagination","tests.e2e","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_contacts_e2e","",""
-"
-    E2E Test: Simulate resending a failed message using send_message.
-    ","1","test_resend_failed_message","tests.e2e","Sun Nov 09 02:14:48 UTC 2025","passed","Sun Nov 09 02:14:48 UTC 2025","","test_messages_e2e","",""
-"Test successfully listing messages.","1","test_list_messages_success","tests.unit.sdk","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_messages","",""
-"","1","test_empty_signature","tests.unit.server","Sun Nov 09 02:14:55 UTC 2025","passed","Sun Nov 09 02:14:55 UTC 2025","","test_signature_validation","",""
+    ","1","test_create_duplicate_contact_error","tests.e2e","Sun Nov 09 02:17:41 UTC 2025","passed","Sun Nov 09 02:17:41 UTC 2025","","test_contacts_e2e","",""
