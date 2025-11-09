@@ -67,7 +67,7 @@ def test_list_contacts_success(contacts, mock_api_client):
     # Assertions
     mock_api_client.request.assert_called_once_with("GET", "/contacts", params={"pageIndex": 1, "max": 2})
     assert len(response["contactsList"]) == 2
-    assert response["contactsList"][0]["id"] == "12"
+    assert response["contactsList"][0]["id"] == "123"
 
 
 def test_get_contact_success(contacts, mock_api_client):
@@ -82,7 +82,7 @@ def test_get_contact_success(contacts, mock_api_client):
     # Assertions
     mock_api_client.request.assert_called_once_with("GET", f"/contacts/{contact_id}")
     assert response["id"] == "123"
-    assert response["name"] == "John Do"
+    assert response["name"] == "John Doe"
 
 
 def test_get_contact_not_found(contacts, mock_api_client):
