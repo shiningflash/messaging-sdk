@@ -1,0 +1,6 @@
+DEBUG    logger.sdk:validators.py:17 Entering validate_request decorator.
+INFO     logger.sdk:validators.py:18 Validating request payload: {'name': 'Jane Doe', 'phone': '+987654321'}
+DEBUG    logger.sdk:validators.py:20 Exiting validate_request decorator.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:contacts.py:93 Updating contact 123 with payload: {'name': 'Jane Doe', 'phone': '+987654321'}
+DEBUG    logger.sdk:validators.py:45 Exiting validate_response decorator.
