@@ -1,0 +1,4 @@
+WARNING  logger.sdk:validators.py:27 No payload provided for validation.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:contacts.py:93 Updating contact 123 with payload: {'name': 'Jane Doe', 'phone': '+987654321'}
+DEBUG    logger.sdk:validators.py:45 Exiting validate_response decorator.

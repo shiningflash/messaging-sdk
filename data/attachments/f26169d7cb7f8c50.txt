@@ -1,0 +1,5 @@
+2025-11-09 02:14:49,106 - INFO - logger.sdk - Sending GET request to http://localhost:3000/contacts with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+2025-11-09 02:14:49,106 - INFO - logger.sdk - Received response with status 500
+2025-11-09 02:14:49,106 - ERROR - logger.sdk - Server Error: Internal Server Error
+2025-11-09 02:14:49,106 - ERROR - logger.sdk - [API Error] 500: Server error. Please try again later.
+2025-11-09 02:14:49,106 - ERROR - logger.sdk - [ServerError] The server encountered an issue.
