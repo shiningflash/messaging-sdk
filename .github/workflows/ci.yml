@@ -35,6 +35,7 @@ jobs:
       BASE_URL: ${{ secrets.BASE_URL }}
       API_KEY: ${{ secrets.API_KEY }}
       WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -58,13 +59,19 @@ jobs:
           pip install -r requirements.txt
           npm install -g allure-commandline
 
+      # -------------------------------
+      # Run tests normally (don't ignore failures)
+      # -------------------------------
       - name: Run tests (coverage + allure results)
+        id: run_tests
         run: |
           source venv/bin/activate
           pytest --cov=src --cov-report=xml --cov-report=term \
-                 --alluredir=allure-results --tb=short || true
-        continue-on-error: true
+                 --alluredir=allure-results --tb=short || echo "exit_code=$?" >> $GITHUB_OUTPUT
 
+      # -------------------------------
+      # Always generate reports (even if tests failed)
+      # -------------------------------
       - name: Generate JUnit XML
         if: always()
         run: |
@@ -120,3 +127,10 @@ jobs:
             } else {
               await github.rest.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
             }
+
+      # -------------------------------
+      # Explicitly fail job if tests failed
+      # -------------------------------
+      - name: Fail job if tests failed
+        if: ${{ steps.run_tests.outputs.exit_code != '' && steps.run_tests.outputs.exit_code != '0' }}
+        run: exit 1
