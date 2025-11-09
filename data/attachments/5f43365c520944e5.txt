@@ -1,0 +1,4 @@
+ERROR    logger.sdk:api.py:20 [API Error]: An error occurred.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:messages.py:65 Requesting a list of messages with params: {'page': 1, 'limit': 10}
+ERROR    logger.sdk:decorators.py:26 [ApiError]: An error occurred.

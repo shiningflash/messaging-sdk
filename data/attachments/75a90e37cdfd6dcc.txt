@@ -1,0 +1,4 @@
+ERROR    logger.sdk:api.py:18 [API Error] 404: Resource not found.
+WARNING  logger.sdk:api.py:39 [NotFoundError] Resource does not exist.
+INFO     logger.sdk:contacts.py:110 Deleting contact with ID: non-existent
+ERROR    logger.sdk:decorators.py:26 [ApiError]: Resource not found. (HTTP 404)

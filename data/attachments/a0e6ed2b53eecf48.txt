@@ -1,0 +1,4 @@
+2025-11-09 01:11:22,804 - ERROR - logger.sdk - [API Error] 404: Resource not found.
+2025-11-09 01:11:22,804 - WARNING - logger.sdk - [NotFoundError] Resource does not exist.
+2025-11-09 01:11:22,805 - INFO - logger.sdk - Deleting contact with ID: non-existent
+2025-11-09 01:11:22,805 - ERROR - logger.sdk - [ApiError]: Resource not found. (HTTP 404)

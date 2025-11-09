@@ -1,0 +1,3 @@
+2025-11-09 01:11:22,846 - ERROR - logger.sdk - [API Error] 404: Message not found.
+2025-11-09 01:11:22,847 - INFO - logger.sdk - Fetching message details for ID: non-existent
+2025-11-09 01:11:22,847 - ERROR - logger.sdk - [ApiError]: Message not found. (HTTP 404)
