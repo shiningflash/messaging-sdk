@@ -83,6 +83,7 @@ jobs:
         if: always()
         run: |
           allure generate allure-results -o allure-report --clean || echo "No allure-results to generate"
+          echo "<!-- build: run-${{ github.run_number }} -->" >> allure-report/index.html
           touch allure-report/.nojekyll
 
       - name: Deploy Allure Report to GitHub Pages branch
