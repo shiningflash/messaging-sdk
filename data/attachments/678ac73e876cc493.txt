@@ -1,0 +1,4 @@
+DEBUG    logger.sdk:validators.py:17 Entering validate_request decorator.
+INFO     logger.sdk:validators.py:18 Validating request payload: {'name': 'John Doe'}
+ERROR    logger.sdk:validators.py:22 Request Validation Error: [{"type":"missing","loc":["phone"],"msg":"Field required","input":{"name":"John Doe"},"url":"https://errors.pydantic.dev/2.10/v/missing"}]
+ERROR    logger.sdk:validators.py:24 Field: ('phone',), Error: Field required

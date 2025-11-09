@@ -1,0 +1,5 @@
+2025-11-09 00:39:29,675 - INFO - logger.sdk - Sending GET request to http://localhost:3000/contacts/non-existent with headers {'Authorization': 'Bearer there-is-no-key', 'Content-Type': 'application/json'} and payload {}
+2025-11-09 00:39:29,676 - INFO - logger.sdk - Received response with status 404
+2025-11-09 00:39:29,676 - ERROR - logger.sdk - Resource Not Found: Not Found
+2025-11-09 00:39:29,676 - ERROR - logger.sdk - [API Error] 404: Resource not found.
+2025-11-09 00:39:29,676 - WARNING - logger.sdk - [NotFoundError] Resource does not exist.

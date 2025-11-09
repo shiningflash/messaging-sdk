@@ -1,0 +1,3 @@
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:contacts.py:58 Listing contacts with params: {'pageIndex': 1, 'max': 2}
+DEBUG    logger.sdk:validators.py:45 Exiting validate_response decorator.

@@ -1,0 +1,11 @@
+DEBUG    logger.sdk:validators.py:17 Entering validate_request decorator.
+INFO     logger.sdk:validators.py:18 Validating request payload: {'to': {'id': 'contact123'}, 'content': 'Hello, World!', 'from': '+987654321'}
+DEBUG    logger.sdk:validators.py:20 Exiting validate_request decorator.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:messages.py:41 Preparing to send a message.
+DEBUG    logger.sdk:messages.py:45 Transformed payload: {'to': {'id': 'contact123'}, 'content': 'Hello, World!', 'from': '+987654321'}
+INFO     logger.sdk:messages.py:48 Sending message request to the API.
+DEBUG    logger.sdk:validators.py:45 Exiting validate_response decorator.
+DEBUG    logger.sdk:validators.py:41 Entering validate_response decorator.
+INFO     logger.sdk:messages.py:80 Fetching message details for ID: msg123
+DEBUG    logger.sdk:validators.py:45 Exiting validate_response decorator.
